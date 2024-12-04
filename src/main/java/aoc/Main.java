@@ -7,7 +7,7 @@ import java.nio.file.Files;
 public class Main {
 
     public static void main(final String[] args) {
-        runDay(0);
+        runDay(1);
 
 //        runDay(Day.DAY_1);
 
@@ -37,7 +37,10 @@ public class Main {
             try {
                 final Class<?> clazz = Class.forName(className);
                 final DayChallenge dayInstance = (DayChallenge) clazz.getDeclaredConstructor().newInstance();
-                dayInstance.processInput(inputFile);
+
+                // Retorna as soluções:
+                System.out.println("Solution Part1: " + dayInstance.solvePart1(inputFile));
+                System.out.println("Solution Part2: " + dayInstance.solvePart2(inputFile));
 
             } catch (final ClassCastException e) {
                 System.out.println("Erro: A classe " + className + " não implementa a interface DayChallenge.");
@@ -48,7 +51,7 @@ public class Main {
             System.out.println("Erro ao ler o arquivo: " + e.getMessage());
         } catch (final ReflectiveOperationException e) {
             System.out.println("Erro ao executar a reflexão: " + e.getMessage());
-            e.printStackTrace();  // Exibe a pilha de exceções para depuração
+            e.printStackTrace();
         }
     }
 
@@ -68,48 +71,3 @@ public class Main {
         processDay(className, file);
     }
 }
-
-//    public static void runDay(int day) {
-//
-//        final String dayN = "Day" + day;
-//        final String className = dayN.toLowerCase() + "." + dayN;  // Nome da classe, incluindo o pacote "DayN"
-//        final String inputFile = "src/main/java/" + dayN.toLowerCase() + "/input.txt";  // Caminho correto para o arquivo de entrada
-//
-//        try {
-//            // Verificar se a classe existe
-//            final Class<?> clazz = Class.forName(className);  // Carrega a classe do dia
-//            System.out.println("Running " + dayN + "\n");
-//
-//            // Verificar se o input existe
-//            if (!Files.exists(Paths.get(inputFile))) {
-//                System.out.println("Erro: O arquivo de entrada '" + inputFile + "' não foi encontrado.");
-//                return;
-//            }
-//
-//            // Se estiver vazio, avisa
-//            final String input = new String(Files.readAllBytes(Paths.get(inputFile)));
-//            if (input.isBlank()) {
-//                System.out.println("Aviso: O arquivo '" + inputFile + "' está vazio.");
-//            }
-//
-//            // Assegurar que a classe implementa a Interface do DayChallenge
-//            try {
-//                final DayChallenge dayInstance = (DayChallenge) clazz.getDeclaredConstructor().newInstance();  // Cria a instância da classe
-//                // Se sim, processa input
-//                dayInstance.processInput(input);
-//
-//            } catch (final ClassCastException e) {
-//                // Se o casting falhar, mostrar uma mensagem mais clara
-//                System.out.println("Erro: A classe " + className + " não implementa a interface DayChallenge.");
-//                return;
-//            }
-//
-//        } catch (final ClassNotFoundException e) {
-//            System.out.println("Erro: Classe " + className + " não encontrada.");
-//        } catch (final IOException e) {
-//            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
-//        } catch (final ReflectiveOperationException e) {
-//            System.out.println("Erro ao executar a reflexão: " + e.getMessage());
-//            e.printStackTrace();  // Exibe a pilha de exceções para depuração
-//        }
-//    }
