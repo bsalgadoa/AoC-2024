@@ -1,7 +1,12 @@
 package aoc;
 
 import java.io.File;
+import java.io.IOException;
 
 public interface DayChallenge {
-    void processInput(File inputFile);
+
+    Integer solvePart1(File inputFile) throws IOException;
+
+    Integer solvePart2(File inputFile) throws IOException;
+
 }
