@@ -57,12 +57,9 @@ public class Day1 implements DayChallenge {
                 map.compute(rightValue, (k, v) -> (v == null) ? 1 : v + 1);
             }
         }
-
         int result = 0;
         for (final Integer leftValue : leftList) {
-            if (map.containsKey(leftValue)) {
-                result += (leftValue * map.get(leftValue));
-            }
+            result += (leftValue * map.getOrDefault(leftValue, 0));
         }
         return result;
     }
