@@ -1,2 +1,13 @@
 /build/
 .settings/org.eclipse.jdt.ui.prefs
+
+# Ignorar arquivos .log
+*.log
+
+# Ignorar diretórios .idea/
+.idea/
+
+# Ignorar todos os arquivos e diretórios que começam com ponto
+.*
+
+
