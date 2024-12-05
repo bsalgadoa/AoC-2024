@@ -10,16 +10,23 @@ import aoc.DayChallenge;
 
 public class Day2 implements DayChallenge {
 
-    private boolean isSafe(final int[] values, final boolean isAscendig) {
+    /*
+     * According to the puzzle, isSafe if:
+     *  - The levels are either all increasing or all decreasing.
+     *  - Any two adjacent levels differ by at least one and at most three.
+     */
+    private boolean isSafe(final int[] values, final boolean isAscending) {
 
         for (int i = 0; i < (values.length - 1); i++) {
-            if (((Math.abs(values[i] - values[(i + 1)])) > 3) || ((Math.abs(values[i] - values[i + 1])) < 1)) {
+            final int diff = Math.abs(values[i] - values[i + 1]);
+
+            if ((diff > 3) || (diff < 1)) {
                 return false;
             }
-            if (isAscendig && (values[i + 1] <= values[i])) {
+            if (isAscending && (values[i + 1] <= values[i])) {
                 return false;
             }
-            if (!isAscendig && (values[i + 1] >= values[i])) {
+            if (!isAscending && (values[i + 1] >= values[i])) {
                 return false;
             }
         }
@@ -35,15 +42,15 @@ public class Day2 implements DayChallenge {
 
                 final int[] report = Arrays.stream(line.split("\\s+")).mapToInt(Integer::parseInt).toArray();
 
-                if (report[0] == report[1]) {
-                    continue;
-                }
-                boolean isAscendig = true;
-                if (report[0] > report[1]) {
-                    isAscendig = false;
-                }
-                if (isSafe(report, isAscendig)) {
-                    safeReports += 1;
+                // if the first 2 are equal, we don't even need to proceed calling the method, we can skip line
+                if (report[0] != report[1]) {
+                    // determine if it's ascending or not
+                    final boolean isAscending = report[0] < report[1];
+
+                    // call the isSafe method with the report and the growing order.
+                    if (isSafe(report, isAscending)) {
+                        safeReports++;
+                    }
                 }
             }
         }
