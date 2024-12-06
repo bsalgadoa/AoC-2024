@@ -4,29 +4,44 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import aoc.DayChallenge;
 
 public class Day2 implements DayChallenge {
+
+    private boolean canBeMadeSafe(final ArrayList<Integer> report) {
+        for (int i = 0; i < report.size(); i++) {
+            final ArrayList<Integer> newReport = new ArrayList<>(report);
+            newReport.remove(i);
+
+            final boolean isAscending = newReport.get(0) < newReport.get(1);
+            if (isSafe(newReport, isAscending)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /*
      * According to the puzzle, isSafe if:
      *  - The levels are either all increasing or all decreasing.
      *  - Any two adjacent levels differ by at least one and at most three.
      */
-    private boolean isSafe(final int[] values, final boolean isAscending) {
+    private boolean isSafe(final ArrayList<Integer> report, final boolean isAscending) {
+        for (int i = 0; i < (report.size() - 1); i++) {
 
-        for (int i = 0; i < (values.length - 1); i++) {
-            final int diff = Math.abs(values[i] - values[i + 1]);
+            final Integer currentValue = report.get(i);
+            final Integer nextValue = report.get(i + 1);
 
-            if ((diff > 3) || (diff < 1)) {
+            final int diff = Math.abs(currentValue - nextValue);
+            if ((diff < 1) || (diff > 3)) {
                 return false;
             }
-            if (isAscending && (values[i + 1] <= values[i])) {
+            if (isAscending && (currentValue >= nextValue)) {
                 return false;
             }
-            if (!isAscending && (values[i + 1] >= values[i])) {
+            if (!isAscending && (currentValue <= nextValue)) {
                 return false;
             }
         }
@@ -36,17 +51,19 @@ public class Day2 implements DayChallenge {
     @Override
     public Integer solvePart1(final File inputFile) throws IOException {
         int safeReports = 0;
-        try (final BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile))) {
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
+                final String[] values = line.split("\\s+");
+                final ArrayList<Integer> report = new ArrayList<>();
 
-                final int[] report = Arrays.stream(line.split("\\s+")).mapToInt(Integer::parseInt).toArray();
-
+                for (final String value : values) {
+                    report.add(Integer.parseInt(value));
+                }
                 // if the first 2 are equal, we don't even need to proceed calling the method, we can skip line
-                if (report[0] != report[1]) {
-                    // determine if it's ascending or not
-                    final boolean isAscending = report[0] < report[1];
-
+                if (report.get(0) != report.get(1)) {
+                    final boolean isAscending = report.get(0) < report.get(1);
                     // call the isSafe method with the report and the growing order.
                     if (isSafe(report, isAscending)) {
                         safeReports++;
@@ -59,8 +76,26 @@ public class Day2 implements DayChallenge {
 
     @Override
     public Integer solvePart2(final File inputFile) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        int safeReports = 0;
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                final String[] values = line.split("\\s+");
+                final ArrayList<Integer> report = new ArrayList<>();
+
+                for (final String value : values) {
+                    report.add(Integer.parseInt(value));
+                }
+
+                final boolean isAscending = report.get(0) < report.get(1);
+
+                if (isSafe(report, isAscending) || canBeMadeSafe(report)) {
+                    safeReports++;
+                }
+            }
+        }
+        return safeReports;
     }
 
 }
