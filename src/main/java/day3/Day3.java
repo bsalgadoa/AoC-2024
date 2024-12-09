@@ -13,7 +13,7 @@ import aoc.DayChallenge;
 
 public class Day3 implements DayChallenge {
 
-    public static List<String> extractDoDontBlocks(StringBuilder combinedLine) {
+    private static List<String> extractDoDontBlocks(StringBuilder combinedLine) {
         final List<String> result = new ArrayList<>();
 
         // Regex para capturar o bloco entre "do()" e "don't()"
