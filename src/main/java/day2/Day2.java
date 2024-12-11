@@ -1,14 +1,13 @@
 package day2;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import aoc.DayChallenge;
+import aoc.AbstractDayChallenge;
 
-public class Day2 implements DayChallenge {
+public class Day2 extends AbstractDayChallenge {
 
     private boolean canBeMadeSafe(final ArrayList<Integer> report) {
         for (int i = 0; i < report.size(); i++) {
@@ -52,22 +51,23 @@ public class Day2 implements DayChallenge {
     public Integer solvePart1(final File inputFile) throws IOException {
         int safeReports = 0;
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                final String[] values = line.split("\\s+");
-                final ArrayList<Integer> report = new ArrayList<>();
+        // Use the method from AbstractDayChallenge to read the lines from the file
+        List<String> lines = getInputAsListOfLines(inputFile);
 
-                for (final String value : values) {
-                    report.add(Integer.parseInt(value));
-                }
-                // if the first 2 are equal, we don't even need to proceed calling the method, we can skip line
-                if (report.get(0) != report.get(1)) {
-                    final boolean isAscending = report.get(0) < report.get(1);
-                    // call the isSafe method with the report and the growing order.
-                    if (isSafe(report, isAscending)) {
-                        safeReports++;
-                    }
+        // Iterate through the lines to process the reports
+        for (String line : lines) {
+            final String[] values = line.split("\\s+");
+            final ArrayList<Integer> report = new ArrayList<>();
+
+            for (final String value : values) {
+                report.add(Integer.parseInt(value));
+            }
+            // if the first 2 are equal, we don't even need to proceed calling the method, we can skip line
+            if (report.get(0) != report.get(1)) {
+                final boolean isAscending = report.get(0) < report.get(1);
+                // call the isSafe method with the report and the growing order.
+                if (isSafe(report, isAscending)) {
+                    safeReports++;
                 }
             }
         }
@@ -78,21 +78,22 @@ public class Day2 implements DayChallenge {
     public Integer solvePart2(final File inputFile) throws IOException {
         int safeReports = 0;
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                final String[] values = line.split("\\s+");
-                final ArrayList<Integer> report = new ArrayList<>();
+        // Use the method from AbstractDayChallenge to read the lines from the file
+        List<String> lines = getInputAsListOfLines(inputFile);
 
-                for (final String value : values) {
-                    report.add(Integer.parseInt(value));
-                }
+        // Iterate through the lines to process the reports
+        for (String line : lines) {
+            final String[] values = line.split("\\s+");
+            final ArrayList<Integer> report = new ArrayList<>();
 
-                final boolean isAscending = report.get(0) < report.get(1);
+            for (final String value : values) {
+                report.add(Integer.parseInt(value));
+            }
 
-                if (isSafe(report, isAscending) || canBeMadeSafe(report)) {
-                    safeReports++;
-                }
+            final boolean isAscending = report.get(0) < report.get(1);
+
+            if (isSafe(report, isAscending) || canBeMadeSafe(report)) {
+                safeReports++;
             }
         }
         return safeReports;
